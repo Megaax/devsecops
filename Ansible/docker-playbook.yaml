@@ -1,10 +1,9 @@
 - name: docker build and push
   hosts: localhost
-  become: yes
+  
   tasks:
-
     - name: Build Docker Image
-      command: docker build -t petstore .
+      command: sudo docker build -t petstore .
       args:
         chdir: /var/lib/jenkins/workspace/petshop
 
