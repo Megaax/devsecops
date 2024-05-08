@@ -3,7 +3,7 @@
   
   tasks:
     - name: Build Docker Image
-      command: sudo docker build -t petstore .
+      command: docker build -t petstore .
       args:
         chdir: /var/lib/jenkins/workspace/petshop
 
