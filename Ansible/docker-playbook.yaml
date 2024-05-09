@@ -1,5 +1,6 @@
 - name: docker build and push
   hosts: dev
+  become: yes
   
   tasks:
     - name: Build Docker Image
