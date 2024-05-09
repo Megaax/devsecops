@@ -1,5 +1,5 @@
 - name: docker build and push
-  hosts: localhost
+  hosts: dev
   
   tasks:
     - name: Build Docker Image
