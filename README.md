@@ -1,84 +1,79 @@
-MyBatis JPetStore
-=================
+# Ansible DevSecOps Petshop Project with Jenkins CI/CD
 
-[![Java CI](https://github.com/mybatis/jpetstore-6/actions/workflows/ci.yaml/badge.svg)](https://github.com/mybatis/jpetstore-6/actions/workflows/ci.yaml)
-[![Container Support](https://github.com/mybatis/jpetstore-6/actions/workflows/support.yaml/badge.svg)](https://github.com/mybatis/jpetstore-6/actions/workflows/support.yaml)
-[![Coverage Status](https://coveralls.io/repos/github/mybatis/jpetstore-6/badge.svg?branch=master)](https://coveralls.io/github/mybatis/jpetstore-6?branch=master)
-[![License](https://img.shields.io/:license-apache-brightgreen.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
+![Project-Overview](image.png)
 
-![mybatis-jpetstore](https://mybatis.org/images/mybatis-logo.png)
 
-JPetStore 6 is a full web application built on top of MyBatis 3, Spring 5 and Stripes.
+This project demonstrates the deployment of a Java-based Petshop application using a combination of Jenkins for CI/CD, Docker for containerization, and Kubernetes for orchestration. It also incorporates Ansible to automate and manage the deployment process, showcasing a comprehensive DevSecOps approach.
 
-Essentials
-----------
+## Overview
 
-* [See the docs](http://www.mybatis.org/jpetstore-6)
+The project aims to:
 
-## Other versions that you may want to know about
+- Automate the deployment of a Petshop application using Jenkins as the CI/CD tool.
+- Utilize Docker containers for consistent and agile application hosting.
+- Leverage Kubernetes clusters for scalable and orchestrated application management.
+- Streamline and automate the deployment process with Ansible.
 
-- JPetstore on top of Spring, Spring MVC, MyBatis 3, and Spring Security https://github.com/making/spring-jpetstore
-- JPetstore with Vaadin and Spring Boot with Java Config https://github.com/igor-baiborodine/jpetstore-6-vaadin-spring-boot
-- JPetstore on MyBatis Spring Boot Starter https://github.com/kazuki43zoo/mybatis-spring-boot-jpetstore
+## Deployment Strategies
 
-## Run on Application Server
-Running JPetStore sample under Tomcat (using the [cargo-maven2-plugin](https://codehaus-cargo.github.io/cargo/Maven2+plugin.html)).
+### Jenkins CI/CD
 
-- Clone this repository
+Jenkins orchestrates the entire deployment pipeline, ensuring that the application is built, tested, and deployed efficiently.
 
-  ```
-  $ git clone https://github.com/mybatis/jpetstore-6.git
-  ```
+### Docker Containers
 
-- Build war file
+Docker containers are used for their agility and consistency, allowing for easy scaling and management of the application.
 
-  ```
-  $ cd jpetstore-6
-  $ ./mvnw clean package
-  ```
+### Kubernetes Clusters
 
-- Startup the Tomcat server and deploy web application
+Kubernetes clusters are utilized to showcase scalability and orchestration capabilities, providing a robust platform for running the application.
 
-  ```
-  $ ./mvnw cargo:run -P tomcat90
-  ```
+### Ansible Automation
 
-  > Note:
-  >
-  > We provide maven profiles per application server as follow:
-  >
-  > | Profile        | Description |
-  > | -------------- | ----------- |
-  > | tomcat90       | Running under the Tomcat 9.0 |
-  > | tomcat85       | Running under the Tomcat 8.5 |
-  > | tomee80        | Running under the TomEE 8.0(Java EE 8) |
-  > | tomee71        | Running under the TomEE 7.1(Java EE 7) |
-  > | wildfly26      | Running under the WildFly 26(Java EE 8) |
-  > | wildfly13      | Running under the WildFly 13(Java EE 7) |
-  > | liberty-ee8    | Running under the WebSphere Liberty(Java EE 8) |
-  > | liberty-ee7    | Running under the WebSphere Liberty(Java EE 7) |
-  > | jetty          | Running under the Jetty 9 |
-  > | glassfish5     | Running under the GlassFish 5(Java EE 8) |
-  > | glassfish4     | Running under the GlassFish 4(Java EE 7) |
-  > | resin          | Running under the Resin 4 |
+Ansible plays a pivotal role in automating and managing the deployment process, ensuring efficiency and consistency across environments.
 
-- Run application in browser http://localhost:8080/jpetstore/ 
-- Press Ctrl-C to stop the server.
+## Pipeline Stages Explanation
 
-## Run on Docker
-```
-docker build . -t jpetstore
-docker run -p 8080:8080 jpetstore
-```
-or with Docker Compose:
-```
-docker compose up -d
-```
+The Jenkins pipeline stages are designed to automate various aspects of the software development lifecycle, focusing on the build, test, and deployment phases. Each stage represents a distinct subset of tasks performed throughout the pipeline. Below is an explanation of each stage based on the provided pipeline configuration and general Jenkins pipeline concepts:
 
-## Try integration tests
+### `clean Workspace`
 
-Perform integration tests for screen transition.
+- **Purpose**: Cleans the workspace before starting the build process to ensure a clean and consistent environment for each build.
 
-```
-$ ./mvnw clean verify -P tomcat90
-```
+### `checkout scm`
+
+- **Purpose**: Checks out the latest version of the source code from the specified Git repository, ensuring the build process uses the most recent code changes.
+
+### `maven compile`
+
+- **Purpose**: Compiles the Java source code into bytecode using Maven, preparing the application for testing and deployment.
+
+### `maven Test`
+
+- **Purpose**: Runs the unit tests defined in the project to verify that the compiled code behaves as expected and to catch any issues early in the development cycle.
+
+### `Sonarqube Analysis`
+
+- **Purpose**: Performs static code analysis using SonarQube to identify bugs, vulnerabilities, and code smells, helping maintain code quality and security standards.
+
+### `quality gate`
+
+- **Purpose**: Checks if the project meets the predefined quality gates, which are criteria that must be met before the code can be considered ready for deployment. If the quality gate is not passed, the pipeline can be configured to abort or continue with further actions.
+
+### `Build war file`
+
+- **Purpose**: Builds the application into a WAR (Web Application Archive) file using Maven, a package format for web applications that can be deployed on application servers.
+
+### `OWASP Dependency Check`
+
+- **Purpose**: Scans the project's dependencies for known vulnerabilities using OWASP Dependency Check, helping identify and mitigate security risks associated with third-party libraries.
+
+### `Ansible docker Docker`
+
+- **Purpose**: Deploys the application using Docker containers by running an Ansible playbook (`docker.yaml`) that sets up Docker containers for the application, ensuring it is containerized and ready for deployment.
+
+### `k8s using ansible`
+
+- **Purpose**: Deploys the application on a Kubernetes cluster by running another Ansible playbook (`kube.yaml`). Kubernetes orchestration allows for scalable and managed deployment of the application, making it suitable for production environments.
+
+Each stage in the pipeline is designed to automate and streamline the software development process, from compiling and testing the code to deploying it in a containerized and orchestrated environment. This approach facilitates continuous integration and continuous deployment (CI/CD), enabling frequent and reliable updates to the application.
